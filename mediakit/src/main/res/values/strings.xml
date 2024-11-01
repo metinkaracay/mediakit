@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_text">Ayarlar</string>
+    <string name="ok_text">Tamam</string>
+    <string name="permission_denied_title">%1$s izni reddedildi</string>
+    <string name="permission_denied_message">%1$s izni uygulamanın çalışması için gerekli. Tekrar denemek ister misiniz?</string>
+    <string name="option_camera">Kamera</string>
+    <string name="option_gallery">Galeri</string>
+    <string name="video_compressing_text">Video işleniyor...</string>
+    <string name="crop_failed_message">Kırpma işlemi başarısız</string>
+    <string name="unsupported_media_type">Desteklenmeyen medya türü</string>
+    <string name="media_type_unknown">Medya türü belirlenmedi</string>
+    <string name="no_media_selected">Medya seçilmedi</string>
+    <string name="photo_capture_failed">Fotoğraf çekimi başarısız</string>
+</resources>

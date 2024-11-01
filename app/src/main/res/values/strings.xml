@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">media-permissions-example</string>
+    <string name="choose_media_button_text">Medya Seç</string>
+</resources>

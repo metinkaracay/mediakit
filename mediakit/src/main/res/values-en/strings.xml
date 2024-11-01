@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_text">Settings</string>
+    <string name="ok_text">Okay</string>
+    <string name="permission_denied_title">%1$s permission denied</string>
+    <string name="permission_denied_message">%1$s permission is required for the application to function properly. Would you like to try again?</string>
+    <string name="option_camera">Camera</string>
+    <string name="option_gallery">Gallery</string>
+    <string name="video_compressing_text">Video Compressing...</string>
+    <string name="crop_failed_message">Cropping failed</string>
+    <string name="unsupported_media_type">Unsupported media type</string>
+    <string name="media_type_unknown">Media type could not be determined</string>
+    <string name="no_media_selected">No media selected</string>
+    <string name="photo_capture_failed">Photo capture failed</string>
+</resources>
