@@ -70,7 +70,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.metinkaracay"
                 artifactId = "mediakit"
-                version = "1.0.1"
+                version = "1.0.2"
             }
         }
     }
