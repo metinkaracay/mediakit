@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    `maven-publish`
 }
 
 android {
@@ -36,6 +37,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+
+    tasks.withType<JavaCompile> {
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
+    }
 }
 
 dependencies {
@@ -55,4 +61,17 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.uCrop)
     implementation(libs.ffmpeg)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create("release", MavenPublication::class) {
+                from(components["release"])
+                groupId = "com.github.metinkaracay"
+                artifactId = "mediakit"
+                version = "1.0.0"
+            }
+        }
+    }
 }
