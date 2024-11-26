@@ -15,8 +15,12 @@ import android.net.Uri
 import android.widget.MediaController
 import android.widget.VideoView
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
@@ -38,6 +42,8 @@ class MainActivity : ComponentActivity() {
 fun PermissionBottomSheetExample() {
     val viewModel = viewModel<MainViewModel>()
     var isBottomSheetVisible by remember { mutableStateOf(false) }
+    var isOpenCameraClicked by remember { mutableStateOf(false) }
+    var isOpenGalleryClicked by remember { mutableStateOf(false) }
     var capturedImageUri by remember { mutableStateOf<Uri?>(null) }
     var originalVideoSize by remember { mutableStateOf(0L) }
     var compressedVideoSize by remember { mutableStateOf(0L) }
@@ -55,6 +61,30 @@ fun PermissionBottomSheetExample() {
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "Camera",
+                            modifier = Modifier.size(56.dp)
+                                .clickable {
+                                    isOpenCameraClicked = true
+                                }
+                        )
+                        Spacer(modifier = Modifier.width(60.dp))
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Gallery",
+                            modifier = Modifier.size(56.dp)
+                                .clickable {
+                                    isOpenGalleryClicked = true
+                                }
+                        )
+                    }
                     Button(onClick = {
                         isBottomSheetVisible = true
                     }) {
@@ -79,6 +109,30 @@ fun PermissionBottomSheetExample() {
                     compressedVideoUri?.let {
                         Text(text = "Compressed Video Size: ${viewModel.formatFileSize(compressedVideoSize)}")
                     }
+                }
+
+                if (isOpenCameraClicked) {
+                    MediaKit.OpenCamera(
+                        compressedImageUri = { uri ->
+                            capturedImageUri = uri
+                        },
+                        imageCropSize = MediaEnums.CropAspectRatioEnum.ASPECT_16_9,
+                    )
+                }
+
+                if (isOpenGalleryClicked) {
+                    MediaKit.OpenGallery(
+                        compressedImageUri = { uri ->
+                            capturedImageUri = uri
+                        },
+                        imageCropSize = MediaEnums.CropAspectRatioEnum.ASPECT_16_9,
+                        compressedVideoUri = { uri ->
+                            if (uri != null) {
+                                isBottomSheetVisible = false
+                                compressedVideoUri = uri
+                            }
+                        }
+                    )
                 }
 
                 if (isBottomSheetVisible) {
