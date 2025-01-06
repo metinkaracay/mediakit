@@ -51,6 +51,8 @@ fun MediaOptionsBottomSheet(
     originalVideoSize: (Long) -> Unit,
     compressedVideoSize: (Long) -> Unit,
     compressedVideoUri: (Uri?) -> Unit,
+    cameraPermissionDenied: () -> Unit = {},
+    useDefaultWarnings: Boolean = false
 ) {
     val context = LocalContext.current
     val deniedPermission by remember { mutableStateOf("") }
@@ -91,7 +93,9 @@ fun MediaOptionsBottomSheet(
                 compressedImageUri.invoke(uri)
             },
             imageCropSize = imageCropSize,
-            imageCompressionLevel = imageCompressionLevel
+            imageCompressionLevel = imageCompressionLevel,
+            useDefaultWarnings = useDefaultWarnings,
+            cameraPermissionDenied = cameraPermissionDenied
         )
     }
 
@@ -140,11 +144,16 @@ fun ProcessCameraMedia(
     compressedImageUri: (Uri?) -> Unit,
     imageCropSize: MediaEnums.CropAspectRatioEnum,
     imageCompressionLevel: MediaEnums.CompressImageEnum,
+    cameraPermissionDenied: () -> Unit = {},
+    useDefaultWarnings: Boolean = false,
+    photoCaptureFailed: () -> Unit = {},
+    photoCroppingFailed: () -> Unit = {}
 ) {
     val context = LocalContext.current
     var capturedImageUri by remember { mutableStateOf<Uri?>(null) }
     var deniedPermission by remember { mutableStateOf("") }
     var showPermissionAlertDialog by remember { mutableStateOf(false) }
+    var isCameraOpened by remember { mutableStateOf(false) }
 
     val cropActivityResultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -159,9 +168,14 @@ fun ProcessCameraMedia(
                         }
                     }
                 } else {
-                    Toast.makeText(context, context.getString(R.string.crop_failed_message), Toast.LENGTH_SHORT).show()
+                    if (!useDefaultWarnings) {
+                        photoCroppingFailed()
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.crop_failed_message), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
+            isCameraOpened = false
         }
     )
 
@@ -171,7 +185,11 @@ fun ProcessCameraMedia(
             if (success && capturedImageUri != null) {
                 MediaHelper.startImageCrop(capturedImageUri!!, context, imageCropSize, cropActivityResultLauncher)
             } else {
-                Toast.makeText(context, R.string.photo_capture_failed, Toast.LENGTH_SHORT).show()
+                if (!useDefaultWarnings) {
+                    photoCaptureFailed()
+                } else {
+                    Toast.makeText(context, R.string.photo_capture_failed, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     )
@@ -179,7 +197,8 @@ fun ProcessCameraMedia(
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
-            if (isGranted) {
+            if (isGranted && !isCameraOpened) {
+                isCameraOpened = true
                 MediaHelper.openCamera(context, cameraContentLauncher, { uri -> capturedImageUri = uri })
             } else {
                 deniedPermission = context.getString(R.string.option_camera)
@@ -190,15 +209,19 @@ fun ProcessCameraMedia(
 
     LaunchedEffect(Unit) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            MediaHelper.openCamera(context, cameraContentLauncher) { uri ->
-                capturedImageUri = uri
+            if (!isCameraOpened) {
+                isCameraOpened = true
+                MediaHelper.openCamera(context, cameraContentLauncher) { uri ->
+                    capturedImageUri = uri
+                }
             }
         } else {
+            cameraPermissionDenied()
             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
-    if (showPermissionAlertDialog) {
+    if (showPermissionAlertDialog && useDefaultWarnings) {
         PermissionAlertDialog(
             permission = deniedPermission,
             onConfirm = {
@@ -226,6 +249,8 @@ fun HandleGallerySelection(
     videoCompressionLevel: MediaEnums.CompressVideoEnum,
     imageCompressionLevel: MediaEnums.CompressImageEnum,
     imageCropSize: MediaEnums.CropAspectRatioEnum,
+    useDefaultWarnings: Boolean = false,
+    photoCroppingFailed: () -> Unit = {}
 ) {
     val context = LocalContext.current
     var capturedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -246,7 +271,11 @@ fun HandleGallerySelection(
                         }
                     }
                 } else {
-                    Toast.makeText(context, context.getString(R.string.crop_failed_message), Toast.LENGTH_SHORT).show()
+                    if (!useDefaultWarnings) {
+                        photoCroppingFailed()
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.crop_failed_message), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -277,13 +306,11 @@ fun HandleGallerySelection(
                             isCompressing = false
                         }
                     } else {
-                        Toast.makeText(context, R.string.unsupported_media_type, Toast.LENGTH_SHORT).show()
+                        if (useDefaultWarnings) Toast.makeText(context, R.string.unsupported_media_type, Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(context, R.string.media_type_unknown, Toast.LENGTH_SHORT).show()
+                    if (useDefaultWarnings) Toast.makeText(context, R.string.media_type_unknown, Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(context, R.string.no_media_selected, Toast.LENGTH_SHORT).show()
             }
         }
     )

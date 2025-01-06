@@ -23,6 +23,8 @@ class MediaKit {
             originalVideoSize: ((Long) -> Unit)? = null,
             compressedVideoSize: ((Long) -> Unit)? = null,
             compressedVideoUri: ((Uri?) -> Unit)? = null,
+            cameraPermissionDenied: () -> Unit = {},
+            useDefaultWarnings: Boolean = false
         ) {
             MediaOptionsBottomSheet(
                 options = options,
@@ -42,7 +44,9 @@ class MediaKit {
                 },
                 compressedVideoUri = { uri ->
                     compressedVideoUri?.invoke(uri)
-                }
+                },
+                cameraPermissionDenied = cameraPermissionDenied,
+                useDefaultWarnings = useDefaultWarnings
             )
         }
 
@@ -71,6 +75,7 @@ class MediaKit {
             originalVideoSize: ((Long) -> Unit)? = null,
             compressedVideoSize: ((Long) -> Unit)? = null,
             compressedVideoUri: ((Uri?) -> Unit)? = null,
+            useDefaultWarnings: Boolean = false
         ) {
             HandleGallerySelection(
                 galleryType = galleryType,
@@ -88,7 +93,8 @@ class MediaKit {
                 },
                 compressedVideoUri = { uri ->
                     compressedVideoUri?.invoke(uri)
-                }
+                },
+                useDefaultWarnings = useDefaultWarnings
             )
         }
     }

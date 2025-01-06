@@ -13,6 +13,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import android.net.Uri
 import android.widget.MediaController
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.rememberAsyncImagePainter
@@ -48,6 +50,7 @@ fun PermissionBottomSheetExample() {
     var originalVideoSize by remember { mutableStateOf(0L) }
     var compressedVideoSize by remember { mutableStateOf(0L) }
     var compressedVideoUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -158,6 +161,9 @@ fun PermissionBottomSheetExample() {
                                 isBottomSheetVisible = false
                                 compressedVideoUri = uri
                             }
+                        },
+                        cameraPermissionDenied = {
+                            Toast.makeText(context, "Camera permission denied test", Toast.LENGTH_SHORT).show()
                         }
                     )
                 }
