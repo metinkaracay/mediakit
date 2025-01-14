@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "media-permissions-example"
 include(":app")
 include(":mediakit")
+include(":ffmpeg")
