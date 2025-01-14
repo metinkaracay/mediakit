@@ -71,7 +71,9 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.metinkaracay"
                 artifactId = "mediakit"
-                version = "1.0.3"
+                version = "1.0.6"
+
+                artifact("$buildDir/outputs/aar/${project.name}-release.aar")
             }
         }
     }
