@@ -70,6 +70,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
     implementation(libs.uCrop)
-    implementation(libs.ffmpeg)
+    //implementation(libs.ffmpeg)
 
 }

@@ -5,8 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.FileProvider
-import com.arthenica.mobileffmpeg.Config
-import com.arthenica.mobileffmpeg.FFmpeg
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.util.FileUtils
 import kotlinx.coroutines.CoroutineScope
@@ -68,7 +66,7 @@ object MediaHelper {
 
             val command = videoCompressLevel.getCompressCommand(sourcePath!!, destinationPath)
 
-            FFmpeg.executeAsync(command) { _, returnCode ->
+            /*FFmpeg.executeAsync(command) { _, returnCode ->
                 CoroutineScope(Dispatchers.Main).launch {
                     if (returnCode == Config.RETURN_CODE_SUCCESS) {
                         val compressedUri = Uri.fromFile(destinationFile)
@@ -77,7 +75,7 @@ object MediaHelper {
                         onComplete(null)
                     }
                 }
-            }
+            }*/
         }
     }
 
@@ -94,7 +92,7 @@ object MediaHelper {
 
             val command = imageCompressLevel.getCompressCommand(inputPath!!, outputPath)
 
-            FFmpeg.executeAsync(command) { _, returnCode ->
+            /*FFmpeg.executeAsync(command) { _, returnCode ->
                 CoroutineScope(Dispatchers.Main).launch {
                     if (returnCode == Config.RETURN_CODE_SUCCESS) {
                         val compressedUri = Uri.fromFile(outputFile)
@@ -103,7 +101,7 @@ object MediaHelper {
                         onComplete(null)
                     }
                 }
-            }
+            }*/
         }
     }
 }

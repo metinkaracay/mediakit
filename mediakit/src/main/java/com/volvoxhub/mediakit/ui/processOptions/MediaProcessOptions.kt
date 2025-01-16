@@ -161,12 +161,15 @@ fun ProcessCameraMedia(
             if (result.resultCode == Activity.RESULT_OK) {
                 val resultUri = UCrop.getOutput(result.data!!)
                 if (resultUri != null) {
-                    MediaHelper.compressImage(context, imageCompressionLevel, resultUri) { compressedUri ->
+
+                    compressedImageUri(resultUri)
+                    //TODO kütüphane düzelene kadar üst taraf ile alt tarafı değiştirdik
+                    /*MediaHelper.compressImage(context, imageCompressionLevel, resultUri) { compressedUri ->
                         compressedUri?.let {
                             capturedImageUri = compressedUri
                             compressedImageUri(compressedUri)
                         }
-                    }
+                    }*/
                 } else {
                     if (!useDefaultWarnings) {
                         photoCroppingFailed()
@@ -264,12 +267,15 @@ fun HandleGallerySelection(
             if (result.resultCode == Activity.RESULT_OK) {
                 val resultUri = UCrop.getOutput(result.data!!)
                 if (resultUri != null) {
-                    MediaHelper.compressImage(context, imageCompressionLevel, resultUri) { compressedUri ->
+
+                    compressedImageUri(resultUri)
+                    //TODO kütüphane düzelene kadar üst taraf ile alt tarafı değiştirdik
+                    /*MediaHelper.compressImage(context, imageCompressionLevel, resultUri) { compressedUri ->
                         compressedUri?.let {
                             capturedImageUri = compressedUri
                             compressedImageUri(compressedUri)
                         }
-                    }
+                    }*/
                 } else {
                     if (!useDefaultWarnings) {
                         photoCroppingFailed()
@@ -295,16 +301,20 @@ fun HandleGallerySelection(
                         val originalFile = File(originalFilePath!!)
                         originalVideoSize(originalFile.length())
 
-                        isCompressing = true
+                        //isCompressing = true
 
-                        MediaHelper.compressVideo(context, videoCompressionLevel, uri) { compressedUri ->
+                        compressedVideoUri(uri)
+                        val compressedFile = File(uri.path!!)
+                        compressedVideoSize(compressedFile.length())
+                        //TODO kütüphane düzelene kadar üst taraf ile alt tarafı değiştirdik
+                        /*MediaHelper.compressVideo(context, videoCompressionLevel, uri) { compressedUri ->
                             compressedVideoUri(compressedUri)
                             compressedUri?.let {
                                 val compressedFile = File(it.path!!)
                                 compressedVideoSize(compressedFile.length())
                             }
                             isCompressing = false
-                        }
+                        }*/
                     } else {
                         if (useDefaultWarnings) Toast.makeText(context, R.string.unsupported_media_type, Toast.LENGTH_SHORT).show()
                     }
