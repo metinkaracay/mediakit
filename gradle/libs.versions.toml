@@ -32,7 +32,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.8.6" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.7.0" }
 uCrop = { module = "com.github.yalantis:ucrop", version.ref = "uCrop" }
-ffmpeg = { module = "com.arthenica:mobile-ffmpeg-min-gpl", version.ref = "ffmpeg" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 

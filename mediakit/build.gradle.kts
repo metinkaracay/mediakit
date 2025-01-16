@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
     implementation(libs.uCrop)
-    //implementation(libs.ffmpeg)
 }
 
 afterEvaluate {
@@ -70,9 +69,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.metinkaracay"
                 artifactId = "mediakit"
-                version = "1.0.6"
-
-                artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+                version = "1.0.8"
             }
         }
     }
