@@ -55,13 +55,15 @@ class MediaKit {
             compressedImageUri: ((Uri?) -> Unit)? = null,
             imageCropSize: MediaEnums.CropAspectRatioEnum = MediaEnums.CropAspectRatioEnum.ORIGINAL,
             imageCompressionLevel: MediaEnums.CompressImageEnum = MediaEnums.CompressImageEnum.MEDIUM,
-            ) {
+            notCapturedAnything: () -> Unit
+        ) {
             ProcessCameraMedia(
                 compressedImageUri = { uri ->
                     compressedImageUri?.invoke(uri)
                 },
                 imageCropSize = imageCropSize,
                 imageCompressionLevel = imageCompressionLevel,
+                notCapturedAnything = notCapturedAnything
             )
         }
 
@@ -75,7 +77,8 @@ class MediaKit {
             originalVideoSize: ((Long) -> Unit)? = null,
             compressedVideoSize: ((Long) -> Unit)? = null,
             compressedVideoUri: ((Uri?) -> Unit)? = null,
-            useDefaultWarnings: Boolean = false
+            useDefaultWarnings: Boolean = false,
+            notCapturedAnything: () -> Unit
         ) {
             HandleGallerySelection(
                 galleryType = galleryType,
@@ -94,7 +97,8 @@ class MediaKit {
                 compressedVideoUri = { uri ->
                     compressedVideoUri?.invoke(uri)
                 },
-                useDefaultWarnings = useDefaultWarnings
+                useDefaultWarnings = useDefaultWarnings,
+                notCapturedAnything = notCapturedAnything
             )
         }
     }

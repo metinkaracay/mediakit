@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import android.net.Uri
+import android.util.Log
 import android.widget.MediaController
 import android.widget.Toast
 import android.widget.VideoView
@@ -120,6 +121,9 @@ fun PermissionBottomSheetExample() {
                             capturedImageUri = uri
                         },
                         imageCropSize = MediaEnums.CropAspectRatioEnum.ASPECT_16_9,
+                        notCapturedAnything = {
+
+                        }
                     )
                 }
 
@@ -134,6 +138,9 @@ fun PermissionBottomSheetExample() {
                                 isBottomSheetVisible = false
                                 compressedVideoUri = uri
                             }
+                        },
+                        notCapturedAnything = {
+
                         }
                     )
                 }
